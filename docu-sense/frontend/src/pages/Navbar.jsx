@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Menu, Search, X, LayoutDashboard, Files, Settings, User } from "lucide-react";
 import { Input } from "../components/ui/input";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,6 +13,15 @@ export default function Navbar() {
   const profileRef = useRef(null);
   const sidebarRef = useRef(null);
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  
+const handleLogout = () => {
+  dispatch(logout()); // your Redux logout action
+  navigate("/");      // redirect to landing page
+};
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -83,19 +94,24 @@ export default function Navbar() {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 border border-gray-100">
                   <Link
-                    to="/profile"
-                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 gap-2"
-                  >
-                    <User size={16} />
-                    Profile
-                  </Link>
-                  <Link
+                      to="/profile"
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 gap-2"
+                    >
+                      <User size={16} className="text-gray-500" />
+                      Profile
+                    </Link>
+                                    <Link
                     to="/settings"
                     className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 gap-2"
                   >
                     <Settings size={16} />
                     Settings
                   </Link>
+                  
+
+
+                  
+                  <Link to="/">
                   <button
                     onClick={() => {/* logout logic */}}
                     className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 gap-2"
@@ -103,6 +119,9 @@ export default function Navbar() {
                     <X size={16} />
                     Logout
                   </button>
+                  </Link>
+
+                  
                 </div>
               )}
             </div>
@@ -141,6 +160,7 @@ export default function Navbar() {
                 <LayoutDashboard size={18} />
                 Dashboard
               </Link>
+              
               <Link
                 to="/upload-document"
                 className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 rounded-lg"
@@ -171,33 +191,41 @@ export default function Navbar() {
       )}
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed top-16 inset-x-0 bg-white border-t border-gray-200 md:hidden z-30">
-          <div className="p-4 space-y-2">
-            <Link
-              to="/dashboard"
-              className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/documents"
-              className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Documents
-            </Link>
-            <Link
-              to="/settings"
-              className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Settings
-            </Link>
-          </div>
-        </div>
-      )}
+     {/* Mobile Menu */}
+{mobileMenuOpen && (
+  <div className="fixed top-16 inset-x-0 bg-white border-t border-gray-200 md:hidden z-30">
+    <div className="p-4 space-y-2">
+      <Link
+        to="/dashboard"
+        className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Dashboard
+      </Link>
+      <Link
+        to="/upload-document"
+        className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Upload Documents
+      </Link>
+      <Link
+        to="/all-document"
+        className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        All Documents
+      </Link>
+      <Link
+        to="/settings"
+        className="block px-4 py-3 text-gray-700 hover:bg-blue-50 rounded-lg"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Settings
+      </Link>
+    </div>
+  </div>
+)}
     </>
   );
 }

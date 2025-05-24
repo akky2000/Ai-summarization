@@ -38,7 +38,7 @@ export default function LoginPage() {
 
         toast.success("🎉 Login successful! Redirecting…", {
           autoClose: 2000,
-          onClose: () => navigate("/dashboard"),
+          onClose: () => navigate("/Dashboard"),
         });
       } else {
         toast.error(response.data.message || "⚠️ Invalid credentials");

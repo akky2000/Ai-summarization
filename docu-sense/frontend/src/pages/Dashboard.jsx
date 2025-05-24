@@ -3,6 +3,9 @@ import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Search, Upload, Zap, FileText, PieChart, Clock, File, Share2 } from "lucide-react";
+import { Link } from "react-router-dom";
+
+
 
 export default function Dashboard() {
   return (
@@ -13,7 +16,7 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-              Welcome back, <span className="text-blue-600">Alex</span>! 👋
+              Welcome back <span className="text-blue-600"></span> 👋
             </h1>
             <p className="text-sm text-gray-500 flex items-center gap-2">
               <Clock size={16} />
@@ -24,7 +27,7 @@ export default function Dashboard() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="text"
-              placeholder="Search documents, invoices, resumes..."
+              placeholder="Search the documents"
               className="pl-10 w-full rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
             />
           </div>
@@ -32,17 +35,31 @@ export default function Dashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <Button className="h-24 bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all">
+          {/* <Button  className="h-24 bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all">
             <Upload className="text-blue-600" size={24} />
-            <span className="text-sm font-medium text-gray-700">Upload New</span>
-          </Button>
-          <Button className="h-24 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl flex flex-col items-center justify-center gap-2 transition-all">
+            <span className="text-sm font-medium text-gray-700">Upload New Document</span>
+            
+          </Button> */}
+
+
+            <Link to="/upload-document">
+                <Button className="h-24 bg-white hover:from-blue-100  border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all w-full cursor">
+                  <Upload className="text-blue-600" size={24} />
+                  <span className="text-sm font-medium text-gray-700">Upload New Document</span>
+                </Button>
+            </Link>
+
+
+          <Link to="/all-document">
+          <Button className="h-24 bg-white hover:from-blue-100  border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all w-full">
             <Zap className="text-yellow-400" size={24} />
-            <span className="text-sm font-medium">Smart Analysis</span>
+            <span className="text-sm font-medium text-gray-700">All Document</span>
           </Button>
-          <Button className="h-24 bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all">
+          </Link>
+
+          <Button className="h-24 bg-white hover:from-blue-100  border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 transition-all w-full">
             <Share2 className="text-green-600" size={24} />
-            <span className="text-sm font-medium text-gray-700">Share Workspace</span>
+            <span className="text-sm font-medium text-gray-700">Smart Analysis</span>
           </Button>
         </div>
 
