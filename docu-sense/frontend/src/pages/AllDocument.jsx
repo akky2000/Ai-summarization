@@ -181,7 +181,7 @@ const AllDocument = () => {
       <ToastContainer position="top-right" autoClose={3000} />
 
       {/* Filter Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 text-gray-700">
         <h2 className="text-2xl font-bold text-gray-900">
           {DOCUMENT_TYPES[selectedType]}
         </h2>
@@ -275,7 +275,7 @@ const AllDocument = () => {
                 variant="ghost"
                 size="icon"
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 bg-gray-400" />
               </Button>
             </div>
             
@@ -286,7 +286,7 @@ const AllDocument = () => {
                 className="gap-2 flex-wap"
               >
                 <ScrollText className="h-5 w-3" />
-                {processing ? 'Analyzing...' : 'AI Analysis'}
+                {processing ? 'Analyzing...' : 'Summarization'}
               </Button>
 
               <Button 

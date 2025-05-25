@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LandingPage from "./pages/LandingPage";
 import VerifyEmailPage from './pages/VerifyEmailPage';
 // import PrivateRoute from "./components/PrivateRoute";
+import MainLayout from './pages/MainLayout';
 import "./index.css";
 import VerifyEmail from "./pages/VerifyEmail";
 import DocumentUpload from "./pages/DocumentUpload";
@@ -15,19 +16,22 @@ import Profile from "./pages/user/Profile";
 import UpdateProfile from "./pages/user/UpdateProfile";
 import { useDocuments } from "./hooks/useDocuments";
 import { useSelector } from "react-redux";
-
+import { ThemeProvider } from "./context/ThemeContext";
 function App() {
   const {user} = useSelector(state=> state.auth)
     useDocuments(user?._id)
   
   return (
+    <ThemeProvider>
     <Router>
       <Routes>
         {/* Landing page */}
-        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
 
         {/* Auth routes */}
+         
         <Route path="/login" element={<LoginPage />} />
+        
         <Route path="/register" element={<RegisterPage />} />
       
         <Route path="/verify-email" element={<VerifyEmailPage />} />
@@ -36,16 +40,18 @@ function App() {
 
         {/* Main app layout with nested routes */}
         <Route path="/" element={<HomePage />}>
-          <Route index element={<LandingPage />} />
+          {/* <Route index element={<LandingPage />} /> */}
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="upload-document" element={<DocumentUpload />} />
           <Route path="all-document" element={<AllDocument />} />
           <Route path="profile" element={<Profile />} />
           <Route path="update-profile" element={<UpdateProfile />} />
-
-
+           <Route element={<MainLayout />}/>
+          
 
         </Route>
+
+       
 
         {/* Optional: redirect /landingPage to /landing if used mistakenly */}
         <Route path="/landingPage" element={<Navigate to="/landing" replace />} />
@@ -54,6 +60,7 @@ function App() {
         <Route path="*" element={<div className="p-8 text-center text-gray-500 text-xl">404 - Page Not Found</div>} />
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 }
 

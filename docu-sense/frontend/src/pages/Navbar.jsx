@@ -40,7 +40,7 @@ const handleLogout = () => {
 
   return (
     <>
-      <nav className="bg-white/90 backdrop-blur-md border-b border-gray-200 p-4 shadow-sm fixed w-full z-30 ">
+      <nav className="bg-white/90 backdrop-blur-md border-b border-gray-200 p-4 shadow-sm fixed w-full z-30 text-gray-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           {/* Left Section */}
           <div className="flex items-center gap-4">
@@ -52,7 +52,7 @@ const handleLogout = () => {
               <span className="text-xs font-medium">Menu</span>
             </button>
             
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/dashboard" className="flex items-center gap-2">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
                 <Files className="text-white" size={28} />
               </div>
@@ -63,13 +63,13 @@ const handleLogout = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl">
+          <div className="flex-1 max-w-2xl text-gray-800">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
                 placeholder="Search documents..."
-                className="pl-10 w-full rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="pl-10 w-full rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
               />
             </div>
           </div>
@@ -140,13 +140,13 @@ const handleLogout = () => {
       {/* Desktop Sidebar with Close Button */}
       {sidebarOpen && (
         <>
-          <div className="fixed inset-0 bg-black/30 z-30" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-20 bg-black-30 " onClick={() => setSidebarOpen(false)} />
           <div ref={sidebarRef} className="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-40 transition-transform">
             <div className="p-4 flex justify-between items-center border-b border-gray-200">
               <h3 className="text-lg font-semibold">Menu</h3>
               <button 
                 onClick={() => setSidebarOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
+                className="p-2 bg-gray-500 rounded-full "
               >
                 <X size={20} />
               </button>

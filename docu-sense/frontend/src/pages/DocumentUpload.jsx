@@ -63,7 +63,7 @@ const DocumentUpload = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-14">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-14 text-gray-800">
       <ToastContainer />
       <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-blue-600">
         <Upload size={24} />
