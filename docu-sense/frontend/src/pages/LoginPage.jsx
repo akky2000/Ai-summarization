@@ -83,7 +83,7 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="john@example.com"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-800"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -97,7 +97,7 @@ export default function LoginPage() {
             <input
               type="password"
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-800"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

@@ -306,7 +306,7 @@ export default function RegisterPage() {
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
               required
             />
             <input
@@ -315,7 +315,7 @@ export default function RegisterPage() {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
               required
             />
             <input
@@ -324,7 +324,7 @@ export default function RegisterPage() {
               placeholder="Phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
               required
             />
             <input
@@ -333,7 +333,7 @@ export default function RegisterPage() {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-800"
               required
             />
             <p className="text-sm text-gray-500 mt-1">
