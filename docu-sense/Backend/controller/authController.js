@@ -21,63 +21,119 @@ const HTTP_STATUS = {
   
   
   
-  export const register = async (req, res) => {
-    try {
-      const { name, email, phone, password } = req.body;
-      console.log( name, email, phone, password)
+  // export const register = async (req, res) => {
+  //   try {
+  //     const { name, email, phone, password } = req.body;
+  //     console.log( name, email, phone, password)
   
-      if (!name || !email || !phone || !password ) {
-        return res
-          .status(404)
-          .json({ status: false, message: "All fields are required" });
-      }
+  //     if (!name || !email || !phone || !password ) {
+  //       return res
+  //         .status(404)
+  //         .json({ status: false, message: "All fields are required" });
+  //     }
 
   
    
-      if (!PASSWORD_REGEX.test(password)) {
-        return res.status(404).json({
-          status: false,
-          message: "Password must be at least 6 characters and include at least one letter",
-        });
-      }
+  //     if (!PASSWORD_REGEX.test(password)) {
+  //       return res.status(404).json({
+  //         status: false,
+  //         message: "Password must be at least 6 characters and include at least one letter",
+  //       });
+  //     }
   
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res
-          .status(404)
-          .json({ status: false, message: "User already exists" });
-      }
+  //     const existingUser = await User.findOne({ email });
+  //     if (existingUser) {
+  //       return res
+  //         .status(404)
+  //         .json({ status: false, message: "User already exists" });
+  //     }
   
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  //     const hashedPassword = await bcrypt.hash(password, 10);
+  //     const otp = Math.floor(100000 + Math.random() * 900000).toString();
   
-      let newUser = await User.create({
-        name,
-        email,
-        phone,
-        password: hashedPassword,
-        verificationToken: otp,
-        verificationTokenExpiresAt: Date.now() + 5 * 60 * 1000, // expires in 5 minutes
-      });
+  //     let newUser = await User.create({
+  //       name,
+  //       email,
+  //       phone,
+  //       password: hashedPassword,
+  //       verificationToken: otp,
+  //       verificationTokenExpiresAt: Date.now() + 5 * 60 * 1000, // expires in 5 minutes
+  //     });
   
       
   
-      await newUser.save();
-      await sendVerificationCode(email, otp);
+  //     await newUser.save();
+  //     await sendVerificationCode(email, otp);
   
-      return res.status(200).json({
-        status: true,
-        message: "Registration successful. Please verify your email.",
-      });
-    } catch (error) {
-      console.error("Registration error:", error);
-      return res.status(500).json({
+  //     return res.status(200).json({
+  //       status: true,
+  //       message: "Registration successful. Please verify your email.",
+  //     });
+  //   } catch (error) {
+  //     console.error("Registration error:", error);
+  //     return res.status(500).json({
+  //       status: false,
+  //       message: "Registration failed. Please try again.",
+  //     });
+  //   }
+  // };
+
+
+  export const register = async (req, res) => {
+  try {
+    const { name, email, phone, password } = req.body;
+
+    if (!name || !email || !phone || !password) {
+      return res.status(400).json({ status: false, message: "All fields are required" });
+    }
+
+    if (!PASSWORD_REGEX.test(password)) {
+      return res.status(400).json({
         status: false,
-        message: "Registration failed. Please try again.",
+        message: "Password must be at least 6 characters and include at least one letter",
       });
     }
-  };
 
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ status: false, message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    const newUser = await User.create({
+      name,
+      email,
+      phone,
+      password: hashedPassword,
+      verificationToken: otp,
+      verificationTokenExpiresAt: Date.now() + 5 * 60 * 1000,
+    });
+
+    // ✅ Wrap email sending separately to catch its error
+    try {
+      await sendVerificationCode(email, otp);
+    } catch (emailError) {
+      console.error("❌ Email send failed:", emailError.message);
+      return res.status(500).json({
+        status: false,
+        message: "User created but failed to send verification email.",
+      });
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Registration successful. Please verify your email.",
+    });
+  } catch (error) {
+    console.error("❌ Registration error:", error.message);
+    return res.status(500).json({
+      status: false,
+      message: "Registration failed. Please try again.",
+    });
+  }
+};
 
 
 
@@ -86,63 +142,137 @@ const HTTP_STATUS = {
 
 
   
-  export const verifyUser = async (req, res) => {
-    try {
-      const { email, otp } = req.body;
-      console.log(email,otp)
+  // export const verifyUser = async (req, res) => {
+  //   try {
+  //     const { email, otp } = req.body;
+  //     console.log(email,otp)
   
-      // Find user and include hidden token fields
-      const user = await User.findOne({ email })
-        .select("+verificationToken +verificationTokenExpiresAt");
+  //     // Find user and include hidden token fields
+  //     const user = await User.findOne({ email })
+  //       .select("+verificationToken +verificationTokenExpiresAt");
   
-      if (!user) {
-        return res
-          .status(404)
-          .json({ status: false, message: "User not found" });
-      }
+  //     if (!user) {
+  //       return res
+  //         .status(404)
+  //         .json({ status: false, message: "User not found" });
+  //     }
   
-      if (!user.verificationToken) {
-        return res
-          .status(400)
-          .json({ status: false, message: "No pending verification token" });
-      }
+  //     if (!user.verificationToken) {
+  //       return res
+  //         .status(400)
+  //         .json({ status: false, message: "No pending verification token" });
+  //     }
   
-      // Token expired?
-      if (Date.now() > user.verificationTokenExpiresAt.getTime()) {
-        user.verificationToken = undefined;
-        user.verificationTokenExpiresAt = undefined;
-        await user.save({ validateBeforeSave: false });
+  //     // Token expired?
+  //     if (Date.now() > user.verificationTokenExpiresAt.getTime()) {
+  //       user.verificationToken = undefined;
+  //       user.verificationTokenExpiresAt = undefined;
+  //       await user.save({ validateBeforeSave: false });
   
-        return res
-          .status(402)
-          .json({ status: false, message: "Verification token expired" });
-      }
+  //       return res
+  //         .status(402)
+  //         .json({ status: false, message: "Verification token expired" });
+  //     }
   
-      if (user.verificationToken !== otp) {
-        return res
-          .status(401)
-          .json({ status: false, message: "Invalid verification token" });
-      }
+  //     if (user.verificationToken !== otp) {
+  //       return res
+  //         .status(401)
+  //         .json({ status: false, message: "Invalid verification token" });
+  //     }
   
-      // Success: mark as verified and clear token fields
-      user.isVerified = true;
+  //     // Success: mark as verified and clear token fields
+  //     user.isVerified = true;
+  //     user.verificationToken = undefined;
+  //     user.verificationTokenExpiresAt = undefined;
+  //     await user.save({ validateBeforeSave: false });
+  
+  //     return res
+  //       .status(200)
+  //       .json({ status: true, message: "Account verified successfully" });
+  //   } catch (error) {
+  //     console.error("verifyUser error:", error);
+  //     return res
+  //       .status(500)
+  //       .json({ status: false, message: "Verification failed" });
+  //   }
+  // };
+  
+  
+  
+export const verifyUser = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    console.log("Verifying user:", email, otp);
+
+    // Step 1: Find user by email, and include hidden token fields
+    const user = await User.findOne({ email }).select("+verificationToken +verificationTokenExpiresAt");
+
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+
+    // Step 2: Check if a verification token exists
+    if (!user.verificationToken || !user.verificationTokenExpiresAt) {
+      return res.status(400).json({
+        status: false,
+        message: "No pending verification token. Please register again or request a new OTP.",
+      });
+    }
+
+    // Step 3: Check if the token has expired
+    const isExpired = Date.now() > user.verificationTokenExpiresAt.getTime();
+    if (isExpired) {
       user.verificationToken = undefined;
       user.verificationTokenExpiresAt = undefined;
       await user.save({ validateBeforeSave: false });
-  
-      return res
-        .status(200)
-        .json({ status: true, message: "Account verified successfully" });
-    } catch (error) {
-      console.error("verifyUser error:", error);
-      return res
-        .status(500)
-        .json({ status: false, message: "Verification failed" });
+
+      return res.status(410).json({
+        status: false,
+        message: "OTP has expired. Please request a new one.",
+      });
     }
-  };
-  
-  
-  
+
+    // Step 4: Check if OTP matches
+    if (user.verificationToken !== otp) {
+      return res.status(401).json({
+        status: false,
+        message: "Invalid OTP",
+      });
+    }
+
+    // Step 5: All good - mark user as verified
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiresAt = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    console.log("✅ User verified:", user.email);
+
+    return res.status(200).json({
+      status: true,
+      message: "Your account has been verified successfully",
+    });
+  } catch (error) {
+    console.error("verifyUser error:", error);
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong during verification",
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
   //login
   
   export const login = async (req, res) => {

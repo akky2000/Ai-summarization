@@ -5,16 +5,16 @@ export const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true for port 465, false for other ports
   auth: {
-    user: "yadav45abhay@gmail.com",
-    pass: "dykejvtkeryouhzm",
+    user: "akash.tech2511@gmail.com",
+    pass: "btmxslowpntszqek",
   },
 });
 
 const sendEmail = async () => {
   try {
     const info = await transporter.sendMail({
-      from: '"abhay " <yadav45abhay@gmail.com>', // sender address
-      to: "yadavabhay8227@gmail.com", // list of receivers
+      from: '"abhay " <akash.tech2511@gmail.com>', // sender address
+      to: "kashyapakashiyda@gmail.com", // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
       html: "<b>Hello world?</b>", // html body
